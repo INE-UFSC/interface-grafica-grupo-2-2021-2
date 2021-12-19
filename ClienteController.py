@@ -53,13 +53,11 @@ class ClienteController:
                     resultado = self.busca_codigo(codigo)
                     self.__telaCliente.limpa_caixa('codigo')
                     
-        
             if resultado != '':
                 dados = str(resultado)
                 self.__telaCliente.mostra_resultado(dados)
 
         self.__telaCliente.fim()
-
 
     def busca_codigo(self, codigo):
         try:
