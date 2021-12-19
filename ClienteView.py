@@ -9,7 +9,7 @@ class ClienteView():
 
     def tela_consulta(self):
         #FIX ME - implementar a GUI e colocar em self.__container
-        
+        sg.theme('black')
         self.__container = [ [sg.Text('Digite o código ou o nome do cliente e clique na ação desejada :')],
                                         [sg.Text("Nome") , sg.InputText("", key= "nome") ],
                                         [sg.Text("Codigo") , sg.InputText("", key= "codigo") ],
@@ -24,5 +24,8 @@ class ClienteView():
     def le_eventos(self):
         return self.__window.read()
 
-    def fim(self):
+    def limpa_caixa(self,key):
+        return self.__window.Element(key).Update('')
+
+def fim(self):
         self.__window.close()

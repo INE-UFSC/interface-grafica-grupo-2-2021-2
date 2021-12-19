@@ -18,13 +18,42 @@ class ClienteController:
 
             if event == sg.WIN_CLOSED:
                 rodando = False
+
             elif event == 'Cadastrar':
-                #FIX ME - implementar lógica de cadastro
-                pass
-            elif event == 'Consultar':
-                #FIX ME - implementar lógica de consulta
-                pass
+                
+                nome = values['nome']
+                codigo = (values['codigo'])
+                try:
+                    codigo = int(codigo)
+                except:
+                    resultado = 'Codigo deve ser um número inteiro'
+                if isinstance(codigo, int):
+                    if codigo not in self.__clientes.keys():
+                        self.adiciona_cliente(codigo, nome)
+                        resultado = 'Cliente cadastrado'
+                        self.__telaCliente.limpa_caixa('nome')
+                        self.__telaCliente.limpa_caixa('codigo')
+                            
+                    else:
+                            resultado = 'Cliente já está cadastrado'
+                            self.__telaCliente.limpa_caixa('nome')
+                            self.__telaCliente.limpa_caixa('codigo')
             
+            elif event == 'Consultar':
+                nome = values['nome']
+                codigo =( values['codigo'])
+                if codigo != '' and nome != '':
+                    resultado = 'Digite apenas em um dos campos'
+                elif codigo =='' and nome == '':
+                    resultado = 'Digite em um dos campos'
+                elif nome != '':
+                        resultado = self.busca_nome(nome)
+                        self.__telaCliente.limpa_caixa('nome')
+                else: 
+                    resultado = self.busca_codigo(codigo)
+                    self.__telaCliente.limpa_caixa('codigo')
+                    
+        
             if resultado != '':
                 dados = str(resultado)
                 self.__telaCliente.mostra_resultado(dados)
@@ -34,9 +63,14 @@ class ClienteController:
 
     def busca_codigo(self, codigo):
         try:
-            return self.__clientes[codigo]
-        except KeyError:
-            raise KeyError
+            codigo = int(codigo)
+        except:
+            return 'O codigo deve ser um número inteiro'
+        if isinstance (codigo, int):
+            if codigo in self.__clientes.keys():
+                return self.__clientes[codigo]
+            else:
+                return 'Código não encontrado'
 
     # cria novo OBJ cliente e adiciona ao dict
     def adiciona_cliente(self, codigo, nome):
@@ -45,6 +79,5 @@ class ClienteController:
     def busca_nome(self, nome):
         for key, val in self.__clientes.items():
             if val.nome == nome:
-                return key 
-
-        raise LookupError
+                return self.__clientes[key]
+        return 'Cliente não encontrado'
